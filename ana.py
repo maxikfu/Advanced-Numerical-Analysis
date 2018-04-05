@@ -1,6 +1,7 @@
 #ANA
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 with open('DERIV2D/DERIV2D_functionA_XY.csv','r') as fileA:
     csv_file = csv.reader(fileA, delimiter=',')
     dataA = []
@@ -36,14 +37,29 @@ for i in range(0,len(dataA_X)-1):
     derivativeA_Y.append(diff)
 derivativeA=[[i,j] for i,j in zip(derivativeA_X,derivativeA_Y)]
 functionB = [[i,j] for i,j in zip(dataB_X,dataB_Y )]
+#reducing number of points in function # B
+counter = 1
+l=[]
+reduced_B_X = []
+for pointX in dataB_X:
+    l.append(pointX)
+    if counter==5:
+        reduced_B_X.append(np.mean(l))
+        l=[]
+        counter=0
+    counter+=1
+# print(len(dataB_X))
+# print(len(derivativeA_X))
+# print(float(len(dataB_X)/len(derivativeA_X)))
+# print(len(reduced_B_X))
 plt.figure(1)
 plt.plot(derivativeA_X,label = 'derivA_X',color='blue',linewidth = 3)
 plt.plot(derivativeA_Y,label = 'derivA_Y',color='red',linewidth = 3)
 plt.ylabel('Deriv A')
 plt.legend()
 plt.figure(2)
-plt.plot(dataB_X,label='B_X',color='green',linewidth = 3)
-plt.plot(dataB_Y, label='B_Y',color='black',linewidth = 3)
+plt.plot(reduced_B_X,label='B_X',color='green',linewidth = 3)
+# plt.plot(dataB_Y, label='B_Y',color='black',linewidth = 3)
 plt.ylabel('Function B')
 plt.legend()
 plt.show()
